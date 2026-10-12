@@ -18,9 +18,11 @@ Built around editorial typography, deliberate spacing, and a restrained visual l
 
 ```text
 templates/
+├── assets/
+│    ├── js/
+│        ├── theme.js
+│        ├── site-header.js
 ├── style.css
-├── theme.js
-├── site-header.js
 └── LICENSE
 ```
 
