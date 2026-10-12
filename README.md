@@ -33,8 +33,8 @@ Add the stylesheet and scripts to your HTML page:
 ```html
 <link rel="stylesheet" href="style.css" />
 
-<script src="site-header.js" defer></script>
-<script src="theme.js" defer></script>
+<script src="assets/js/site-header.js" defer></script>
+<script src="assets/js/theme.js" defer></script>
 ```
 
 Add a header placeholder and set the initial theme on the body:
