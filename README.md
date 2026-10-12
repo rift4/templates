@@ -1,97 +1,107 @@
 # templates
 
-A minimal, reusable CSS design system for personal websites, portfolios, and landing pages.
+A minimal, reusable front-end design system for personal websites, portfolios, and landing pages.
 
-Built around editorial typography, thoughtful spacing, responsive layouts, and light/dark theme support. Framework-free and easy to adapt to any static HTML project.
-
-## Repository contents
-
-- `style.css` — the stylesheet containing tokens, layout primitives, components, and theme rules
-- `LICENSE` — MIT license
-
-Note: this repository currently provides a stylesheet and design system rather than a full starter site (no HTML files or font binaries are included). If you prefer a ready-to-run starter I can add an `index.html` and demo assets.
+Built around editorial typography, deliberate spacing, and a restrained visual language. Plain HTML, CSS, and JavaScript — no frameworks, no dependencies, just a foundation you can make your own.
 
 ## Features
 
-- Token-based design system (colors, spacing, type, motion)
-- Light and dark themes controlled via `data-theme` on the `body` element
-- Responsive layout patterns for landing pages and project lists
-- Framework-free (works with plain HTML)
-- Small, easy-to-customize surface area for quick iteration
+- **Design tokens** — centralized colors, typography, spacing, layout, and motion values
+- **Theme controller** — cycle between system, light, and dark modes
+- **Reusable site header** — dynamically rendered navigation controls, profile link, and theme toggle
+- **Responsive layouts** — adaptable landing page and project presentation patterns
+- **Editorial typography** — Neue Comet variable font with system fallbacks
+- **Accessible interactions** — semantic controls, descriptive labels, and reduced-motion support
+- **Framework-free** — built with standard web technologies
 
-## Theme behavior (how "system" works)
+## Structure
 
-The stylesheet supports three theme modes via `body[data-theme]`:
-
-- `light` — force the light theme
-- `dark` — force the dark theme
-- `system` — follow the user's OS/browser preference when available
-
-Implementation details: the CSS uses the `prefers-color-scheme` media query together with `body[data-theme="system"]` to switch variables when the OS is in dark mode. This means no JavaScript is required for basic system-theme behavior — browsers that support `prefers-color-scheme` will apply the dark tokens automatically when `data-theme="system"` is set. If you need more advanced runtime switching (persisting a user choice across pages), a small JS helper can toggle the `data-theme` attribute and store the preference in localStorage — tell me if you want that added.
-
-## Fonts and assets
-
-- `style.css` references a variable font (`assets/fonts/NeueCometVariable.woff2`) for the intended appearance. That font file is not included in this repo.
-- The MIT license in this repository applies to the code and stylesheet only and does not automatically grant rights to third-party font files. If you plan to redistribute or bundle a font, verify the font's license separately.
-- If you don't have the font, you can either replace the `--font-family-body` token with system fonts or add a webfont from a provider you have rights to.
-
-Example replacement snippet:
-
-```css
-:root {
-  --font-family-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
+```text
+templates/
+├── style.css
+├── theme.js
+├── site-header.js
+└── LICENSE
 ```
 
-## Quick start
+## Getting started
 
-1. Copy `style.css` into your project.
-2. Include it in your HTML:
+Add the stylesheet and scripts to your HTML page:
 
 ```html
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css" />
+
+<script src="site-header.js" defer></script>
+<script src="theme.js" defer></script>
 ```
 
-3. Minimal page structure to get started:
+Add a header placeholder and set the initial theme on the body:
 
 ```html
 <body data-theme="system">
-  <header class="topbar">
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+  <div id="site-header"></div>
 
   <main>
     <section id="home">
-      <h1 class="home-title">Your name</h1>
-      <div class="home-navigation">
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </section>
-
-    <section id="projects">
-      <article class="project-card">
-        <h2 class="project-card-title">Project title</h2>
-        <p class="project-card-description">Short project description.</p>
-      </article>
+      <h1 class="home-title">Your next idea.</h1>
     </section>
   </main>
 </body>
 ```
 
-## Preview / demo suggestions
+The header script replaces `#site-header` with the shared site header. Load `site-header.js` before `theme.js` so the theme controller can find the toggle button it creates.
 
-A screenshot or a GitHub Pages demo helps people evaluate the visual style before cloning. If you want, I can:
+## Theming
 
-- Add a small `index.html` demo page to this repo and wire it to GitHub Pages
-- Add a `preview.png` screenshot to the README
+The theme controller cycles through three modes:
 
-Tell me which you prefer and I’ll add it.
+| Mode | Behavior |
+| --- | --- |
+| `system` | Follows the operating system's color preference |
+| `light` | Forces the light theme |
+| `dark` | Forces the dark theme |
+
+Set the initial mode using `data-theme` on the `body` element. The selected mode is applied through CSS, and theme changes dispatch a `site:themechange` custom event.
+
+## Site header
+
+The shared header includes a GitHub profile link and a theme toggle. Add `data-show-home-link` to the header placeholder to include a home link.
+
+The placeholder also supports optional configuration:
+
+| Attribute | Purpose |
+| --- | --- |
+| `data-site-root` | Sets the root URL used to resolve site assets |
+| `data-github-url` | Overrides the GitHub profile URL |
+| `data-show-home-link` | Enables the home link |
+| `data-home-page` | Overrides the home page path |
+
+For example:
+
+```html
+<div
+  id="site-header"
+  data-site-root="/"
+  data-github-url="https://github.com/rift4"
+  data-show-home-link
+  data-home-page="index.html"
+></div>
+```
+
+## Customization
+
+Start with the design tokens near the top of `style.css`. CSS custom properties control the visual system, including colors, typography, spacing, layout dimensions, and animation timing.
+
+```css
+:root {
+  --color-orange: #ff4b24;
+  --font-family-body: "Neue Comet", system-ui, sans-serif;
+  --layout-page-gutter: 24px;
+}
+```
+
+Modify existing tokens or introduce your own to adapt the system to your project.
 
 ## License
 
-This repository is licensed under the MIT License. See `LICENSE` for details.
+MIT
